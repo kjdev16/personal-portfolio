@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills and Projects</title>
+    <style>
+        /* Your CSS styles here */
+        .container {
+            padding: 20px;
+        }
+
+        .skills {
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .skill-category {
+            margin-bottom: 2rem;
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .skill-category ul {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .skill-category ul li {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-details {
+            display: none;
+            position: absolute;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            width: 250px;
+        }
+
+        li:hover .project-details {
+            display: block;
+        }
+
+        .project-details p {
+            margin-bottom: 5px;
+        }
+
+        .project-details a {
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .project-details a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <section class="container">
+        <div class="main">
+            <div class="skills">
+                <h2>Skills</h2>
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <ul>
+                        <li>
+                            <span>HTML5</span>
+                            <div class="project-details">
+                                <p>Developer Portfolio</p>
+                                <a href="https://itskj.vercel.app">itskj.vercel.app</a>
+                                <p>Death Note Address Book</p>
+                                <a href="https://deth-note.vercel.app">deth-note.vercel.app</a>
+                                <p>Check Your Luck</p>
+                                <a href="https://check-your-luck.vercel.app">check-your-luck.vercel.app</a>
+                                <p>Dice Game</p>
+                                <a href="https://another-dice-game.vercel.app">another-dice-game.vercel.app</a>
+                                <p>Another Dice Coin Roll Game</p>
+                                <a href="https://dice-coin.vercel.app/">dice-coin.vercel.app/</a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>CSS3</span>
+                            <div class="project-details">
+                                <p>Contact Page</p>
+                                <a href="https://itskj.vercel.app/contact-me.html">(implemented in Portfolio)</a>
+                                <p>Death Note Address Book</p>
+                                <a href="https://deth-note.vercel.app">deth-note.vercel.app</a>
+                                <p>Check Your Luck</p>
+                                <a href="https://check-your-luck.vercel.app">check-your-luck.vercel.app</a>
+                                <p>Dice Game</p>
+                                <a href="https://another-dice-game.vercel.app">another-dice-game.vercel.app</a>
+                                <p>Another Dice Coin Roll Game</p>
+                                <a href="https://dice-coin.vercel.app/">dice-coin.vercel.app/</a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>JavaScript</span>
+                            <div class="project-details">
+                                <p>Death Note Address Book</p>
+                                <a href="https://deth-note.vercel.app">deth-note.vercel.app</a>
+                                <p>Check Your Luck</p>
+                                <a href="https://check-your-luck.vercel.app">check-your-luck.vercel.app</a>
+                                <p>Dice Game</p>
+                                <a href="https://another-dice-game.vercel.app">another-dice-game.vercel.app</a>
+                                <p>Another Dice Coin Roll Game</p>
+                                <a href="https://dice-coin.vercel.app/">dice-coin.vercel.app/</a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Python</span>
+                        </li>
+                        <!-- Add more programming languages as needed -->
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks/Libraries</h3>
+                    <ul>
+                        <li>
+                            <span>Bootstrap 5</span>
+                            <div class="project-details">
+                                <p>Dice Game</p>
+                                <a href="https://another-dice-game.vercel.app">another-dice-game.vercel.app</a>
+                                <p>Another Dice Coin Roll Game</p>
+                                <a href="https://dice-coin.vercel.app/">dice-coin.vercel.app/</a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Telegram Bot API</span>
+                            <div class="project-details">
+                                <p>Contact-Me Page</p>
+                                <a href="https://itskj.vercel.app/contact-me.html">itskj.vercel.app/contact-me.htm</a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>React.JS</span>
+                        </li>
+                        <li>
+                            <span>Node.JS</span>
+                        </li>
+                        <li>
+                            <span>Express.JS</span>
+                        </li>
+
+                        <!-- Add more frameworks/libraries as needed -->
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Operating Systems</h3>
+                    <ul>
+                        <li>
+                            <span>Linux</span>
+                        </li>
+                        <!-- Add more operating systems as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

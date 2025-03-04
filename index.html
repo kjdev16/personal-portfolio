@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Kushagra Jain</title>
+</head>
+
+<body>
+    <header class="container">
+        <div class="page-header">
+            <input type="checkbox" id="click">
+
+            <label for="click" class="mainicon">
+                <div class="menu">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </label>
+            <ul>
+                <li><a href="https://itskj.vercel.app" class="active" style="--navAni:1">Home</a></li>
+                <li><a href="./skills.html" style="--navAni:3">Skills</a></li>
+                <li><a href="https://drive.usercontent.google.com/download?id=1XurUWZEzYSyfEnH72F5uWhd59FSUqKvS&export=download&authuser=0&confirm=t&uuid=0fe3d9cf-ebae-4c70-b514-00001159321a&at=APZUnTXMJelyYAeULdr9YhS00kmc:1715684513565" style="--navAni:4">Resume</a></li>
+                <li><a href="./contact-me.html" style="--navAni:5">Contact</a></li>
+            </ul>
+            <label class="mode">
+                <input type="checkbox" id="darkModeToggle">
+                <i class='bx bxs-moon'></i>
+            </label>
+        </div>
+    </header>
+
+
+    <section class="container">
+        <div class="main">
+            <div class="detail">
+                <h3>Hi, It's Me</h3>
+                <h1>I'm <span style="color:#f9532d;">Kushagra</span></h1>
+                <p>Highly motivated Web Developer with a passion for creating visually appealing webpages. Skilled in HTML, CSS, and JavaScript, with a strong interest in graphic design. Quick learner, able to grasp new concepts rapidly. Highly organized and detail-oriented, ensuring clean and efficient code.  Constantly seeking to enhance user experiences through innovative and creative solutions.
+                </p>
+                <div class="social">
+                    <a href="https://www.linkedin.com/in/kushagrajain16/" style="--socialAni:1"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://www.instagram.com/kushagrajain_16/" style="--socialAni:2"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://github.com/kushagrajain16" style="--socialAni:3"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.facebook.com/KushagraJ16" style="--socialAni:4"><i class='bx bxl-facebook-circle'></i></a>
+                </div>
+            </div>
+            <div class="img-sec">
+                <div class="images">
+                    <a href="https://ibb.co/6F6wQXV"><img src="https://i.ibb.co/sqLR7Wk/316743021-157045573699673-1104146878573161653-n.jpg" class="img-w" alt="316743021-157045573699673-1104146878573161653-n" border="0"></a><br /><br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div>
+            <span>If you like the website give a 🌟 on github —</span>
+            <a href="http://github.com/kushagrajain16/personal-portfolio">Visit Repo
+            </a>
+        </div>
+
+        <div class="container">
+            <p>© 2023 Kushagra Jain —<a href="https://github.com/kushagrajain16">@kushagrajain16</a>
+            </p>
+            <span>
+                <p>Stalk me at: </p>
+                <a href="https://twitter.com/kushagrajain_16" class="fa fa-twitter"></a>
+                <a href="https://instagram.com/kushagrajain_16" class="fa fa-instagram"></a>
+                <a href="https://www.linkedin.com/in/kushagra-jain-881b99227" class="fa fa-linkedin"></a>
+                <a href="https://dribbble.com/kushagrajain_16" class="fa fa-dribbble"></a>
+            </span>
+        </div>
+    </footer>
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
