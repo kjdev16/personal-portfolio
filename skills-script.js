@@ -189,6 +189,7 @@ let currentSkillFilter = null;
 let currentProjectFilter = 'all';
 let searchQuery = '';
 let currentView = 'category';
+let projectsLoaded = false;
 
 // DOM elements
 const navToggle = document.getElementById('nav-toggle');
@@ -220,8 +221,15 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', async () => {
+    // Load skills first (with placeholder project counts)
     await loadSkills();
+    
+    // Then load projects and update the counts
     await loadProjects();
+    
+    // Update skills display with actual project counts
+    updateSkillProjectCounts();
+    
     setupEventListeners();
     updateHeroStats();
 });
@@ -363,8 +371,9 @@ function createSkillLevelCard(level, skills) {
 
 // Create individual skill item
 function createSkillItem(skill) {
-    const relatedProjects = getProjectsForSkill(skill.name);
+    const relatedProjects = projectsLoaded ? getProjectsForSkill(skill.name) : [];
     const projectCount = relatedProjects.length;
+    const displayCount = projectsLoaded ? projectCount : '...';
     
     return `
         <div class="skill-item" data-skill="${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}" data-skill-name="${skill.name}">
@@ -381,9 +390,31 @@ function createSkillItem(skill) {
                 <div class="progress-bar" data-progress="${skill.progress}" style="background: linear-gradient(90deg, ${skill.color}, ${skill.color}aa)"></div>
             </div>
             <div class="skill-description">${skill.description}</div>
-            <div class="project-count">${projectCount} Project${projectCount !== 1 ? 's' : ''}</div>
+            <div class="project-count" data-skill="${skill.name}">${displayCount} Project${projectCount !== 1 ? 's' : ''}</div>
         </div>
     `;
+}
+
+// Update skill project counts after projects are loaded
+function updateSkillProjectCounts() {
+    if (!projectsLoaded) return;
+    
+    document.querySelectorAll('.project-count').forEach(countElement => {
+        const skillName = countElement.getAttribute('data-skill');
+        if (skillName) {
+            const relatedProjects = getProjectsForSkill(skillName);
+            const projectCount = relatedProjects.length;
+            countElement.textContent = `${projectCount} Project${projectCount !== 1 ? 's' : ''}`;
+            
+            // Add animation to show the update
+            countElement.style.transform = 'scale(1.1)';
+            countElement.style.color = 'var(--primary-color)';
+            setTimeout(() => {
+                countElement.style.transform = 'scale(1)';
+                countElement.style.color = '';
+            }, 300);
+        }
+    });
 }
 
 // Load projects from GitHub
@@ -418,6 +449,8 @@ async function loadProjects() {
             .map(repo => enhanceProjectData(repo));
         
         console.log('Loaded projects:', allProjects.map(p => ({ name: p.name, category: p.category, language: p.language })));
+        
+        projectsLoaded = true;
         
         applyProjectFilters();
         hideProjectsLoading();
@@ -596,6 +629,8 @@ function generateDescription(repo) {
 
 // Get projects that use a specific skill
 function getProjectsForSkill(skillName) {
+    if (!projectsLoaded || !allProjects.length) return [];
+    
     const skill = skillName.toLowerCase();
     
     return allProjects.filter(project => {
@@ -609,20 +644,29 @@ function getProjectsForSkill(skillName) {
             return true;
         }
         
-        // Special mappings
+        // Special mappings for skills
         const skillMappings = {
             'html5': ['html'],
+            'css3 & scss': ['css'],
             'css3': ['css'],
+            'scss': ['css'],
             'javascript': ['javascript', 'js'],
             'python': ['python'],
-            'git': ['all'], // Git is used in all projects
+            'git & github': ['all'], // Git is used in all projects
+            'git': ['all'],
             'github': ['all'],
             'responsive design': ['html', 'css', 'web'],
             'bootstrap': ['bootstrap'],
+            'tailwind css': ['tailwind'],
             'tailwind': ['tailwind'],
             'node.js': ['node', 'javascript'],
             'react.js': ['react'],
-            'telegram bot api': ['telegram', 'bot']
+            'react': ['react'],
+            'telegram bot api': ['telegram', 'bot'],
+            'vs code': ['all'], // Used for all projects
+            'linux': ['python', 'shell', 'bash'],
+            'ui/ux principles': ['web', 'html', 'css'],
+            'animation & effects': ['css', 'javascript']
         };
         
         const mappings = skillMappings[skill] || [skill];
@@ -977,6 +1021,8 @@ function setupEventListeners() {
             btn.classList.add('active');
             currentView = btn.dataset.view;
             displaySkills();
+            // Update project counts after view change
+            setTimeout(() => updateSkillProjectCounts(), 100);
         });
     });
     
@@ -1090,7 +1136,9 @@ function updateHeroStats() {
     
     // Update project count after projects are loaded
     setTimeout(() => {
-        document.getElementById('total-projects').textContent = allProjects.length;
+        if (projectsLoaded) {
+            document.getElementById('total-projects').textContent = allProjects.length;
+        }
     }, 1000);
 }
 
