@@ -395,7 +395,7 @@ function createSkillItem(skill) {
                     <i class='bx ${skill.icon}'></i>
                 </div>
                 <div class="skill-details">
-                    <h4>${skill.name}</h4>
+                    <h4 title="${skill.name}">${skill.name}</h4>
                     <span class="skill-level">${skill.level}</span>
                 </div>
             </div>
@@ -777,6 +777,8 @@ function createProjectCard(project) {
         api: 'API Service'
     };
     
+    const projectTitle = project.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    
     card.innerHTML = `
         <div class="project-image">
             <div class="project-overlay">
@@ -800,7 +802,7 @@ function createProjectCard(project) {
         </div>
         <div class="project-content">
             <div class="project-header">
-                <h3>${project.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
+                <h3 title="${projectTitle}">${projectTitle}</h3>
                 <span class="project-type">${project.type}</span>
             </div>
             <p class="project-description">${project.enhancedDescription}</p>
@@ -819,8 +821,8 @@ function createProjectCard(project) {
                 </div>
             </div>
             <div class="project-tech">
-                ${project.techStack.slice(0, 4).map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                ${project.techStack.length > 4 ? `<span class="tech-tag">+${project.techStack.length - 4}</span>` : ''}
+                ${project.techStack.slice(0, 4).map(tech => `<span class="tech-tag" title="${tech}">${tech}</span>`).join('')}
+                ${project.techStack.length > 4 ? `<span class="tech-tag" title="View more technologies">+${project.techStack.length - 4}</span>` : ''}
             </div>
             <div class="project-difficulty">
                 <span class="difficulty-badge ${project.difficulty.toLowerCase()}">${project.difficulty}</span>
@@ -903,7 +905,7 @@ function showProjectModal(projectName) {
                 <h5>Technologies Used:</h5>
                 <div class="tech-stack">
                     ${project.techStack.map(tech => `
-                        <span class="tech-tag-large" style="background: ${getLanguageColor(tech)}22; color: ${getLanguageColor(tech)}; border-color: ${getLanguageColor(tech)}44">
+                        <span class="tech-tag-large" style="background: ${getLanguageColor(tech)}22; color: ${getLanguageColor(tech)}; border-color: ${getLanguageColor(tech)}44" title="${tech}">
                             ${tech}
                         </span>
                     `).join('')}

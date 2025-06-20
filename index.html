@@ -1,103 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kushagra Jain - Full Stack Developer</title>
+    <link rel="stylesheet" href="./assets/css/main.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta name="p:domain_verify" content="f7a3013411d7dc9298fe15ccb0ca504e"/>
-    <title>Kushagra Jain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Kushagra Jain - Full Stack Developer specializing in modern web technologies, UI/UX design, and innovative digital solutions.">
+    <meta name="keywords" content="Full Stack Developer, Web Developer, JavaScript, Python, React, Node.js, UI/UX Design">
+    <meta name="author" content="Kushagra Jain">
+    <meta property="og:title" content="Kushagra Jain - Full Stack Developer">
+    <meta property="og:description" content="Passionate Full Stack Developer creating innovative digital experiences with modern web technologies.">
+    <meta property="og:image" content="https://i.ibb.co/sqLR7Wk/316743021-157045573699673-1104146878573161653-n.jpg">
+    <meta property="og:url" content="https://itskj.vercel.app">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
 </head>
-
 <body>
-    <header class="container">
-        <div class="page-header">
-            <input type="checkbox" id="click">
-
-            <label for="click" class="mainicon">
-                <div class="menu">
-                    <i class='bx bx-menu'></i>
-                </div>
-            </label>
-            <ul>
-                <li><a href="https://itskj.vercel.app" class="active" style="--navAni:1">Home</a></li>
-                <li><a href="./skills.html" style="--navAni:2">Skills</a></li>
-                <li><a href="./github-repos.html" style="--navAni:3">Repositories</a></li>
-                <li><a href="https://drive.usercontent.google.com/download?id=1iKMUs6VxD4ZvMvcDAFR0NpcT4StK51wL&export=download&authuser=0&confirm=t&uuid=52019a42-9cf9-4576-9602-a26bc4e475bb&at=AN8xHor4ASCogelGcVvo4Z94m-ak:1750390233054" style="--navAni:4">Resume</a></li>
-                <li><a href="./contact-me.html" style="--navAni:5">Contact</a></li>
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-text">KJ</span>
+                    <div class="brand-dot"></div>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="./pages/skills/skills.html" class="nav-link">Skills</a></li>
+                <li><a href="./pages/github-repos/github-repos.html" class="nav-link">Repositories</a></li>
+                <li><a href="https://drive.usercontent.google.com/download?id=1iKMUs6VxD4ZvMvcDAFR0NpcT4StK51wL&export=download&authuser=0&confirm=t&uuid=52019a42-9cf9-4576-9602-a26bc4e475bb&at=AN8xHor4ASCogelGcVvo4Z94m-ak:1750390233054" class="nav-link">Resume</a></li>
+                <li><a href="./pages/contact/contact-me.html" class="nav-link">Contact</a></li>
             </ul>
+            <button class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <label class="mode">
                 <input type="checkbox" id="darkModeToggle">
                 <i class='bx bxs-moon'></i>
             </label>
-        </div>
+        </nav>
     </header>
 
-
-    <section class="container">
-        <div class="main">
-            <div class="detail">
-                <h3>Hi, It's Me</h3>
-                <h1>I'm <span style="color:#f9532d;">Kushagra</span></h1>
-                <p>Highly motivated Web Developer with a passion for creating visually appealing webpages. Skilled in HTML, CSS, and JavaScript, with a strong interest in graphic design. Quick learner, able to grasp new concepts rapidly. Highly organized and detail-oriented, ensuring clean and efficient code.  Constantly seeking to enhance user experiences through innovative and creative solutions.
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-greeting">Hello, I'm</p>
+                <h1 class="hero-title">
+                    <span class="hero-name">Kushagra Jain</span>
+                </h1>
+                <h2 class="hero-subtitle">Full Stack Developer</h2>
+                <p class="hero-description">
+                    Passionate about creating innovative digital experiences with modern web technologies. 
+                    I specialize in building scalable applications, beautiful user interfaces, and solving 
+                    complex problems through clean, efficient code.
                 </p>
-                <div class="social">
-                    <a href="https://www.linkedin.com/in/kushagrajain16/" style="--socialAni:1"><i class='bx bxl-linkedin'></i></a>
-                    <a href="https://www.instagram.com/kushagrajain_16/" style="--socialAni:2"><i class='bx bxl-instagram'></i></a>
-                    <a href="https://github.com/kjdev16" style="--socialAni:3"><i class='bx bxl-github'></i></a>
-                    <a href="https://www.facebook.com/KushagraJ16" style="--socialAni:4"><i class='bx bxl-facebook-circle'></i></a>
+                <div class="hero-actions">
+                    <a href="./pages/contact/contact-me.html" class="btn-primary">
+                        <i class='bx bx-message-dots'></i>
+                        <span>Get In Touch</span>
+                    </a>
+                    <a href="./pages/skills/skills.html" class="btn-secondary">
+                        <i class='bx bx-code-alt'></i>
+                        <span>View My Work</span>
+                    </a>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/kushagrajain16/" class="social-link" data-tooltip="LinkedIn">
+                        <i class='bx bxl-linkedin'></i>
+                    </a>
+                    <a href="https://github.com/kjdev16" class="social-link" data-tooltip="GitHub">
+                        <i class='bx bxl-github'></i>
+                    </a>
+                    <a href="https://www.instagram.com/kushagrajain_16/" class="social-link" data-tooltip="Instagram">
+                        <i class='bx bxl-instagram'></i>
+                    </a>
+                    <a href="https://twitter.com/kushagrajain_16" class="social-link" data-tooltip="Twitter">
+                        <i class='bx bxl-twitter'></i>
+                    </a>
                 </div>
             </div>
-            <div class="img-sec">
-                <div class="images">
-                    <a href="https://ibb.co/6F6wQXV"><img src="https://i.ibb.co/sqLR7Wk/316743021-157045573699673-1104146878573161653-n.jpg" class="img-w" alt="316743021-157045573699673-1104146878573161653-n" border="0"></a><br /><br />
+            <div class="hero-image">
+                <div class="hero-avatar-bg"></div>
+                <img src="https://i.ibb.co/sqLR7Wk/316743021-157045573699673-1104146878573161653-n.jpg" 
+                     alt="Kushagra Jain - Full Stack Developer" 
+                     class="hero-avatar">
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class='bx bx-code-alt'></i>
+                    </div>
+                    <span class="stat-number" data-target="15">0</span>
+                    <span class="stat-label">Projects Completed</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class='bx bx-palette'></i>
+                    </div>
+                    <span class="stat-number" data-target="12">0</span>
+                    <span class="stat-label">Technologies Mastered</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class='bx bx-time'></i>
+                    </div>
+                    <span class="stat-number" data-target="3">0</span>
+                    <span class="stat-label">Years Experience</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class='bx bx-happy'></i>
+                    </div>
+                    <span class="stat-number" data-target="100">0</span>
+                    <span class="stat-label">Client Satisfaction</span>
                 </div>
             </div>
         </div>
     </section>
 
-
-    <footer>
-        <div>
-            <span>If you like the website give a 🌟 on github —</span>
-            <a href="http://github.com/kjdev16/personal-portfolio">Visit Repo
-            </a>
-        </div>
-
+    <!-- About Section -->
+    <section class="about-section">
         <div class="container">
-            <p>© 2023 Kushagra Jain —<a href="https://github.com/kjdev16">@kjdev16</a>
-            </p>
-            <span>
-                <p>Stalk me at: </p>
-                <a href="https://twitter.com/kushagrajain_16" class="fa fa-twitter"></a>
-                <a href="https://instagram.com/kushagrajain_16" class="fa fa-instagram"></a>
-                <a href="https://www.linkedin.com/in/kushagrajain16" class="fa fa-linkedin"></a>
-                <a href="https://dribbble.com/kushagrajain_16" class="fa fa-dribbble"></a>
-            </span>
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p>
+                        I'm a passionate Full Stack Developer with over 3 years of experience in creating 
+                        digital solutions that make a difference. My journey in web development started with 
+                        curiosity and has evolved into a deep expertise in modern technologies.
+                    </p>
+                    <p>
+                        I specialize in building scalable web applications using cutting-edge technologies 
+                        like JavaScript, Python, React, and Node.js. My approach combines technical excellence 
+                        with creative problem-solving to deliver exceptional user experiences.
+                    </p>
+                    <div class="skills-preview">
+                        <div class="skill-tag">Frontend Development</div>
+                        <div class="skill-tag">Backend Architecture</div>
+                        <div class="skill-tag">UI/UX Design</div>
+                        <div class="skill-tag">Database Design</div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                         alt="Developer workspace" 
+                         loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Project?</h2>
+                <p>
+                    Let's collaborate and bring your ideas to life with cutting-edge technology 
+                    and innovative solutions that drive results.
+                </p>
+                <div class="cta-actions">
+                    <a href="./pages/contact/contact-me.html" class="btn-primary">
+                        <i class='bx bx-message-dots'></i>
+                        <span>Start a Project</span>
+                    </a>
+                    <a href="./pages/github-repos/github-repos.html" class="btn-secondary">
+                        <i class='bx bx-code-block'></i>
+                        <span>View Portfolio</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kushagra Jain</h3>
+                    <p>Full Stack Developer passionate about creating innovative digital experiences.</p>
+                    <div class="footer-social">
+                        <a href="https://www.linkedin.com/in/kushagrajain16/"><i class='bx bxl-linkedin'></i></a>
+                        <a href="https://github.com/kjdev16"><i class='bx bxl-github'></i></a>
+                        <a href="https://www.instagram.com/kushagrajain_16/"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://twitter.com/kushagrajain_16"><i class='bx bxl-twitter'></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="./pages/skills/skills.html">Skills & Projects</a>
+                    <a href="./pages/github-repos/github-repos.html">GitHub Repositories</a>
+                    <a href="./pages/contact/contact-me.html">Contact Me</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <a href="#">Web Development</a>
+                    <a href="#">UI/UX Design</a>
+                    <a href="#">API Development</a>
+                    <a href="#">Consulting</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kushagra Jain. All rights reserved.</p>
+                <p>Built with ❤️ using modern web technologies</p>
+            </div>
         </div>
     </footer>
-    <script>
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
-        if (isDarkMode) {
-            body.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        }
-        darkModeToggle.addEventListener('change', () => {
-            if (darkModeToggle.checked) {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'disabled');
-            }
-        });
-    </script>
 
+    <script src="./assets/js/main.js"></script>
 </body>
-
 </html>

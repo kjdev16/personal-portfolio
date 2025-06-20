@@ -1,4 +1,4 @@
-// Navigation ToggleAdd commentMore actions
+// Navigation Toggle
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.querySelector('.nav-menu');
 
