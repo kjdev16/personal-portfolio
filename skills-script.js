@@ -136,83 +136,358 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Filter projects by technology (optional enhancement)
-function filterProjects(tech) {
-    const projects = document.querySelectorAll('.project-card');
-    
-    projects.forEach(project => {
-        const projectTech = project.getAttribute('data-tech');
-        
-        if (tech === 'all' || projectTech.includes(tech)) {
-            project.style.display = 'block';
-            project.style.opacity = '1';
-            project.style.transform = 'translateY(0)';
-        } else {
-            project.style.opacity = '0';
-            project.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                project.style.display = 'none';
-            }, 300);
-        }
-    });
-}
+// Enhanced Skills-Projects Logic
+let currentActiveSkill = null;
+let filterTimeout = null;
 
-// Add click handlers for skill items to show related projects
+// Skill to project mapping with more detailed relationships
+const skillProjectMapping = {
+    'html': ['portfolio', 'death-note', 'luck-game', 'dice-game', 'dice-coin'],
+    'css': ['portfolio', 'death-note', 'luck-game', 'dice-game', 'dice-coin'],
+    'javascript': ['portfolio', 'death-note', 'luck-game', 'dice-game', 'dice-coin'],
+    'python': ['telegram-bot', 'automation-scripts'],
+    'bootstrap': ['dice-game', 'dice-coin'],
+    'react': ['portfolio-v2'],
+    'nodejs': ['contact-integration'],
+    'express': ['contact-integration'],
+    'git': ['all'],
+    'linux': ['development'],
+    'telegram': ['contact-integration']
+};
+
+// Project difficulty levels for better categorization
+const projectDifficulty = {
+    'portfolio': 'advanced',
+    'death-note': 'intermediate',
+    'luck-game': 'beginner',
+    'dice-game': 'intermediate',
+    'dice-coin': 'intermediate',
+    'contact-integration': 'advanced'
+};
+
+// Enhanced skill click handler
 document.querySelectorAll('.skill-item').forEach(skill => {
-    skill.addEventListener('click', function() {
+    skill.addEventListener('click', function(e) {
+        e.preventDefault();
+        
         const skillType = this.getAttribute('data-skill');
+        const skillLevel = this.querySelector('.skill-level').textContent.toLowerCase();
         
-        // Remove active class from all skills
-        document.querySelectorAll('.skill-item').forEach(s => s.classList.remove('active'));
+        // Handle skill selection
+        handleSkillSelection(this, skillType, skillLevel);
         
-        // Add active class to clicked skill
-        this.classList.add('active');
+        // Scroll to projects with offset for header
+        scrollToProjects();
         
-        // Scroll to projects section
-        const projectsSection = document.querySelector('.projects-section');
-        if (projectsSection) {
-            projectsSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-        
-        // Highlight related projects
+        // Filter and highlight projects
         setTimeout(() => {
-            highlightRelatedProjects(skillType);
+            filterProjectsBySkill(skillType, skillLevel);
         }, 500);
+    });
+    
+    // Add keyboard support
+    skill.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
     });
 });
 
-function highlightRelatedProjects(skillType) {
-    const projects = document.querySelectorAll('.project-card');
-    
-    projects.forEach(project => {
-        const projectTech = project.getAttribute('data-tech');
-        
-        if (projectTech.includes(skillType)) {
-            project.style.boxShadow = '0 25px 50px -12px rgba(249, 83, 45, 0.25)';
-            project.style.transform = 'translateY(-12px) scale(1.02)';
-            project.style.border = '2px solid var(--primary-color)';
-        } else {
-            project.style.boxShadow = 'var(--shadow-lg)';
-            project.style.transform = 'translateY(0) scale(1)';
-            project.style.border = '1px solid var(--border-color)';
-        }
+function handleSkillSelection(skillElement, skillType, skillLevel) {
+    // Remove previous active states
+    document.querySelectorAll('.skill-item').forEach(s => {
+        s.classList.remove('active', 'selected');
     });
     
-    // Reset highlighting after 3 seconds
+    // Add active state to clicked skill
+    skillElement.classList.add('active', 'selected');
+    currentActiveSkill = skillType;
+    
+    // Update skill category header to show selection
+    const category = skillElement.closest('.skill-category');
+    const categoryHeader = category.querySelector('.category-header h3');
+    const originalText = categoryHeader.getAttribute('data-original') || categoryHeader.textContent;
+    
+    if (!categoryHeader.getAttribute('data-original')) {
+        categoryHeader.setAttribute('data-original', originalText);
+    }
+    
+    categoryHeader.textContent = `${originalText} - ${skillElement.querySelector('h4').textContent} Selected`;
+    
+    // Reset category header after delay
     setTimeout(() => {
-        projects.forEach(project => {
-            project.style.boxShadow = 'var(--shadow-lg)';
-            project.style.transform = 'translateY(0) scale(1)';
-            project.style.border = '1px solid var(--border-color)';
-        });
-        
-        // Remove active class from skills
-        document.querySelectorAll('.skill-item').forEach(s => s.classList.remove('active'));
+        categoryHeader.textContent = originalText;
     }, 3000);
+    
+    // Show skill selection feedback
+    showSkillSelectionFeedback(skillElement, skillType);
 }
+
+function showSkillSelectionFeedback(skillElement, skillType) {
+    // Create and show feedback tooltip
+    const feedback = document.createElement('div');
+    feedback.className = 'skill-feedback';
+    feedback.innerHTML = `
+        <i class='bx bx-check-circle'></i>
+        <span>Filtering projects by ${skillType.toUpperCase()}</span>
+    `;
+    
+    skillElement.appendChild(feedback);
+    
+    // Animate feedback
+    setTimeout(() => feedback.classList.add('show'), 10);
+    
+    // Remove feedback after delay
+    setTimeout(() => {
+        feedback.classList.remove('show');
+        setTimeout(() => {
+            if (feedback.parentNode) {
+                feedback.parentNode.removeChild(feedback);
+            }
+        }, 300);
+    }, 2000);
+}
+
+function scrollToProjects() {
+    const projectsSection = document.querySelector('.projects-section');
+    if (projectsSection) {
+        const headerHeight = document.querySelector('.header').offsetHeight;
+        const targetPosition = projectsSection.offsetTop - headerHeight - 20;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
+function filterProjectsBySkill(skillType, skillLevel) {
+    const projects = document.querySelectorAll('.project-card');
+    const relatedProjects = skillProjectMapping[skillType] || [];
+    
+    // Clear any existing filter timeout
+    if (filterTimeout) {
+        clearTimeout(filterTimeout);
+    }
+    
+    // Add filter indicator to projects section
+    showFilterIndicator(skillType, relatedProjects.length);
+    
+    projects.forEach((project, index) => {
+        const projectId = getProjectId(project);
+        const isRelated = relatedProjects.includes(projectId) || relatedProjects.includes('all');
+        
+        setTimeout(() => {
+            if (isRelated) {
+                highlightProject(project, skillType);
+            } else {
+                dimProject(project);
+            }
+        }, index * 100); // Stagger the animation
+    });
+    
+    // Auto-reset filter after 5 seconds
+    filterTimeout = setTimeout(() => {
+        resetProjectFilter();
+    }, 5000);
+    
+    // Update projects section title
+    updateProjectsSectionTitle(skillType, relatedProjects.length);
+}
+
+function getProjectId(projectCard) {
+    // Extract project ID from various sources
+    const techData = projectCard.getAttribute('data-tech') || '';
+    const title = projectCard.querySelector('h3').textContent.toLowerCase();
+    
+    if (title.includes('portfolio')) return 'portfolio';
+    if (title.includes('death note')) return 'death-note';
+    if (title.includes('luck')) return 'luck-game';
+    if (title.includes('dice game') && !title.includes('coin')) return 'dice-game';
+    if (title.includes('dice') && title.includes('coin')) return 'dice-coin';
+    if (title.includes('contact')) return 'contact-integration';
+    
+    return 'unknown';
+}
+
+function highlightProject(project, skillType) {
+    project.classList.add('highlighted', 'skill-related');
+    project.style.transform = 'translateY(-12px) scale(1.02)';
+    project.style.boxShadow = '0 25px 50px -12px rgba(249, 83, 45, 0.25)';
+    project.style.border = '2px solid var(--primary-color)';
+    project.style.background = 'linear-gradient(135deg, rgba(249, 83, 45, 0.05) 0%, rgba(255, 255, 255, 1) 100%)';
+    
+    // Add skill badge to project
+    addSkillBadge(project, skillType);
+    
+    // Animate project content
+    const content = project.querySelector('.project-content');
+    content.style.transform = 'translateY(-4px)';
+}
+
+function dimProject(project) {
+    project.classList.add('dimmed');
+    project.classList.remove('highlighted', 'skill-related');
+    project.style.opacity = '0.4';
+    project.style.transform = 'translateY(0) scale(0.95)';
+    project.style.filter = 'grayscale(50%)';
+    
+    // Remove any existing skill badges
+    const existingBadge = project.querySelector('.skill-badge');
+    if (existingBadge) {
+        existingBadge.remove();
+    }
+}
+
+function addSkillBadge(project, skillType) {
+    // Remove existing badge
+    const existingBadge = project.querySelector('.skill-badge');
+    if (existingBadge) {
+        existingBadge.remove();
+    }
+    
+    // Create new skill badge
+    const badge = document.createElement('div');
+    badge.className = 'skill-badge';
+    badge.innerHTML = `
+        <i class='bx bx-check-circle'></i>
+        <span>Uses ${skillType.toUpperCase()}</span>
+    `;
+    
+    const projectContent = project.querySelector('.project-content');
+    projectContent.insertBefore(badge, projectContent.firstChild);
+    
+    // Animate badge appearance
+    setTimeout(() => badge.classList.add('show'), 10);
+}
+
+function showFilterIndicator(skillType, projectCount) {
+    // Remove existing indicator
+    const existingIndicator = document.querySelector('.filter-indicator');
+    if (existingIndicator) {
+        existingIndicator.remove();
+    }
+    
+    // Create filter indicator
+    const indicator = document.createElement('div');
+    indicator.className = 'filter-indicator';
+    indicator.innerHTML = `
+        <div class="filter-content">
+            <i class='bx bx-filter'></i>
+            <span>Showing ${projectCount} project${projectCount !== 1 ? 's' : ''} using <strong>${skillType.toUpperCase()}</strong></span>
+            <button class="clear-filter" onclick="resetProjectFilter()">
+                <i class='bx bx-x'></i>
+                Clear Filter
+            </button>
+        </div>
+    `;
+    
+    const projectsSection = document.querySelector('.projects-section .container');
+    const sectionHeader = projectsSection.querySelector('.section-header');
+    sectionHeader.appendChild(indicator);
+    
+    // Animate indicator
+    setTimeout(() => indicator.classList.add('show'), 10);
+}
+
+function updateProjectsSectionTitle(skillType, projectCount) {
+    const sectionTitle = document.querySelector('.projects-section .section-title');
+    const originalTitle = sectionTitle.getAttribute('data-original') || sectionTitle.textContent;
+    
+    if (!sectionTitle.getAttribute('data-original')) {
+        sectionTitle.setAttribute('data-original', originalTitle);
+    }
+    
+    sectionTitle.innerHTML = `${originalTitle} <span class="skill-filter-text">- ${skillType.toUpperCase()}</span>`;
+}
+
+function resetProjectFilter() {
+    const projects = document.querySelectorAll('.project-card');
+    
+    // Clear filter timeout
+    if (filterTimeout) {
+        clearTimeout(filterTimeout);
+        filterTimeout = null;
+    }
+    
+    // Reset all projects
+    projects.forEach((project, index) => {
+        setTimeout(() => {
+            project.classList.remove('highlighted', 'dimmed', 'skill-related');
+            project.style.transform = 'translateY(0) scale(1)';
+            project.style.boxShadow = 'var(--shadow-lg)';
+            project.style.border = '1px solid var(--border-color)';
+            project.style.opacity = '1';
+            project.style.filter = 'none';
+            project.style.background = 'var(--bg-primary)';
+            
+            // Reset project content
+            const content = project.querySelector('.project-content');
+            content.style.transform = 'translateY(0)';
+            
+            // Remove skill badges
+            const badge = project.querySelector('.skill-badge');
+            if (badge) {
+                badge.classList.remove('show');
+                setTimeout(() => {
+                    if (badge.parentNode) {
+                        badge.remove();
+                    }
+                }, 300);
+            }
+        }, index * 50);
+    });
+    
+    // Remove active states from skills
+    document.querySelectorAll('.skill-item').forEach(skill => {
+        skill.classList.remove('active', 'selected');
+    });
+    
+    // Reset section title
+    const sectionTitle = document.querySelector('.projects-section .section-title');
+    const originalTitle = sectionTitle.getAttribute('data-original');
+    if (originalTitle) {
+        sectionTitle.textContent = originalTitle;
+    }
+    
+    // Remove filter indicator
+    const filterIndicator = document.querySelector('.filter-indicator');
+    if (filterIndicator) {
+        filterIndicator.classList.remove('show');
+        setTimeout(() => {
+            if (filterIndicator.parentNode) {
+                filterIndicator.remove();
+            }
+        }, 300);
+    }
+    
+    currentActiveSkill = null;
+}
+
+// Add "Show All Projects" functionality
+function addShowAllButton() {
+    const skillsSection = document.querySelector('.skills-section .section-header');
+    
+    const showAllBtn = document.createElement('button');
+    showAllBtn.className = 'show-all-btn';
+    showAllBtn.innerHTML = `
+        <i class='bx bx-grid-alt'></i>
+        <span>Show All Projects</span>
+    `;
+    
+    showAllBtn.addEventListener('click', () => {
+        resetProjectFilter();
+        scrollToProjects();
+    });
+    
+    skillsSection.appendChild(showAllBtn);
+}
+
+// Initialize show all button
+document.addEventListener('DOMContentLoaded', () => {
+    addShowAllButton();
+});
 
 // Performance optimization: Debounce scroll events
 function debounce(func, wait) {
@@ -242,78 +517,22 @@ const debouncedScrollHandler = debounce(() => {
 
 window.addEventListener('scroll', debouncedScrollHandler);
 
-// Add typing effect to hero title (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Add CSS for active skill state
-const style = document.createElement('style');
-style.textContent = `
-    .skill-item.active {
-        background: rgba(249, 83, 45, 0.1) !important;
-        border-color: var(--primary-color) !important;
-        transform: translateX(12px) scale(1.02) !important;
-        box-shadow: var(--shadow-lg) !important;
-    }
-    
-    .skill-item.active .skill-details h4 {
-        color: var(--primary-color) !important;
-    }
-    
-    .skill-item.active .progress-bar {
-        box-shadow: 0 0 10px rgba(249, 83, 45, 0.5);
-    }
-`;
-document.head.appendChild(style);
-
 // Add keyboard navigation support
 document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && currentActiveSkill) {
+        resetProjectFilter();
+    }
+    
     if (e.key === 'Tab') {
-        // Add focus styles for keyboard navigation
         document.body.classList.add('keyboard-navigation');
     }
 });
 
 document.addEventListener('mousedown', () => {
-    // Remove focus styles when using mouse
     document.body.classList.remove('keyboard-navigation');
 });
-
-// Add focus styles
-const focusStyle = document.createElement('style');
-focusStyle.textContent = `
-    .keyboard-navigation .skill-item:focus,
-    .keyboard-navigation .project-card:focus,
-    .keyboard-navigation .nav-link:focus {
-        outline: 2px solid var(--primary-color);
-        outline-offset: 2px;
-    }
-`;
-document.head.appendChild(focusStyle);
 
 // Make skill items and project cards focusable
 document.querySelectorAll('.skill-item, .project-card').forEach(el => {
     el.setAttribute('tabindex', '0');
-});
-
-// Add enter key support for skill items
-document.querySelectorAll('.skill-item').forEach(skill => {
-    skill.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.click();
-        }
-    });
 });
