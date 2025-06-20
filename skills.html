@@ -23,6 +23,7 @@
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="skills.html" class="nav-link active">Skills</a></li>
+                <li><a href="github-repos.html" class="nav-link">Repositories</a></li>
                 <li><a href="https://drive.usercontent.google.com/download?id=1iKMUs6VxD4ZvMvcDAFR0NpcT4StK51wL&export=download&authuser=0&confirm=t&uuid=52019a42-9cf9-4576-9602-a26bc4e475bb&at=AN8xHor4ASCogelGcVvo4Z94m-ak:1750390233054" class="nav-link">Resume</a></li>
                 <li><a href="contact-me.html" class="nav-link">Contact</a></li>
             </ul>
@@ -48,14 +49,18 @@
                     <span class="title-line">& Projects</span>
                 </h1>
                 <p class="hero-subtitle">Explore my technical skills and the projects I've built using modern web technologies and frameworks.</p>
-                <div class="hero-stats">
+                <div class="hero-stats" id="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-number">15+</span>
+                        <span class="stat-number" id="total-projects">-</span>
                         <span class="stat-label">Projects Built</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">8+</span>
+                        <span class="stat-number" id="total-technologies">-</span>
                         <span class="stat-label">Technologies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="years-experience">3+</span>
+                        <span class="stat-label">Years Experience</span>
                     </div>
                 </div>
             </div>
@@ -73,221 +78,34 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Technical Skills</h2>
-                <p class="section-subtitle">A comprehensive overview of my technical expertise and the tools I use to build amazing digital experiences.</p>
+                <p class="section-subtitle">A comprehensive overview of my technical expertise and the tools I use to build amazing digital experiences. Click on any skill to see related projects!</p>
+                <div class="skills-controls">
+                    <button class="show-all-btn" id="show-all-btn">
+                        <i class='bx bx-grid-alt'></i>
+                        <span>Show All Projects</span>
+                    </button>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="category">
+                            <i class='bx bx-category'></i>
+                            <span>By Category</span>
+                        </button>
+                        <button class="view-btn" data-view="level">
+                            <i class='bx bx-bar-chart'></i>
+                            <span>By Level</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="skills-grid">
-                <!-- Programming Languages -->
-                <div class="skill-category" data-category="languages">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class='bx bx-code-alt'></i>
-                        </div>
-                        <h3>Programming Languages</h3>
-                        <p>Core languages I use for development</p>
-                    </div>
-                    <div class="skills-list">
-                        <div class="skill-item" data-skill="html">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-html5'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>HTML5</h4>
-                                    <span class="skill-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="95"></div>
-                            </div>
-                            <div class="project-count">5 Projects</div>
-                        </div>
+            <!-- Skills Loading -->
+            <div class="skills-loading" id="skills-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading skills and analyzing projects...</p>
+            </div>
 
-                        <div class="skill-item" data-skill="css">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-css3'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>CSS3</h4>
-                                    <span class="skill-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="90"></div>
-                            </div>
-                            <div class="project-count">5 Projects</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="javascript">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-javascript'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>JavaScript</h4>
-                                    <span class="skill-level">Intermediate</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="80"></div>
-                            </div>
-                            <div class="project-count">4 Projects</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="python">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-python'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Python</h4>
-                                    <span class="skill-level">Intermediate</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="75"></div>
-                            </div>
-                            <div class="project-count">2 Projects</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Frameworks & Libraries -->
-                <div class="skill-category" data-category="frameworks">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class='bx bx-layer'></i>
-                        </div>
-                        <h3>Frameworks & Libraries</h3>
-                        <p>Modern tools and frameworks I work with</p>
-                    </div>
-                    <div class="skills-list">
-                        <div class="skill-item" data-skill="bootstrap">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-bootstrap'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Bootstrap 5</h4>
-                                    <span class="skill-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="85"></div>
-                            </div>
-                            <div class="project-count">2 Projects</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="react">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-react'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>React.js</h4>
-                                    <span class="skill-level">Learning</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="60"></div>
-                            </div>
-                            <div class="project-count">1 Project</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="nodejs">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-nodejs'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Node.js</h4>
-                                    <span class="skill-level">Learning</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="55"></div>
-                            </div>
-                            <div class="project-count">1 Project</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="express">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bx-server'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Express.js</h4>
-                                    <span class="skill-level">Learning</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="50"></div>
-                            </div>
-                            <div class="project-count">1 Project</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tools & Technologies -->
-                <div class="skill-category" data-category="tools">
-                    <div class="category-header">
-                        <div class="category-icon">
-                            <i class='bx bx-wrench'></i>
-                        </div>
-                        <h3>Tools & Technologies</h3>
-                        <p>Development tools and platforms I use</p>
-                    </div>
-                    <div class="skills-list">
-                        <div class="skill-item" data-skill="git">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-git'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Git & GitHub</h4>
-                                    <span class="skill-level">Advanced</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="90"></div>
-                            </div>
-                            <div class="project-count">All Projects</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="linux">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-tux'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Linux</h4>
-                                    <span class="skill-level">Intermediate</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="70"></div>
-                            </div>
-                            <div class="project-count">Development</div>
-                        </div>
-
-                        <div class="skill-item" data-skill="telegram">
-                            <div class="skill-info">
-                                <div class="skill-icon">
-                                    <i class='bx bxl-telegram'></i>
-                                </div>
-                                <div class="skill-details">
-                                    <h4>Telegram Bot API</h4>
-                                    <span class="skill-level">Intermediate</span>
-                                </div>
-                            </div>
-                            <div class="skill-progress">
-                                <div class="progress-bar" data-progress="75"></div>
-                            </div>
-                            <div class="project-count">1 Project</div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Skills Grid -->
+            <div class="skills-grid" id="skills-grid">
+                <!-- Skills will be dynamically loaded here -->
             </div>
         </div>
     </section>
@@ -296,149 +114,58 @@
     <section class="projects-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Featured Projects</h2>
+                <h2 class="section-title" id="projects-title">Featured Projects</h2>
                 <p class="section-subtitle">A showcase of my recent work and the technologies used to build them.</p>
+                <div class="projects-controls">
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="search-projects" placeholder="Search projects...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="web">Web Apps</button>
+                        <button class="filter-btn" data-filter="game">Games</button>
+                        <button class="filter-btn" data-filter="tool">Tools</button>
+                        <button class="filter-btn" data-filter="api">API</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="projects-grid">
-                <div class="project-card" data-tech="html,css,js">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://itskj.vercel.app" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                                <a href="https://github.com/kushagrajain16/personal-portfolio" class="project-link" target="_blank">
-                                    <i class='bx bxl-github'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg portfolio"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Developer Portfolio</h3>
-                        <p>A modern, responsive portfolio website showcasing my skills and projects with smooth animations and professional design.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">CSS3</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Projects Loading -->
+            <div class="projects-loading" id="projects-loading">
+                <div class="loading-spinner"></div>
+                <p>Fetching projects from GitHub...</p>
+            </div>
 
-                <div class="project-card" data-tech="html,css,js">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://deth-note.vercel.app" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg death-note"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Death Note Address Book</h3>
-                        <p>A themed address book application with local storage functionality and Death Note anime-inspired design.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">CSS3</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Local Storage</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Projects Grid -->
+            <div class="projects-grid" id="projects-grid">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
 
-                <div class="project-card" data-tech="html,css,js">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://check-your-luck.vercel.app" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg luck-game"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Check Your Luck</h3>
-                        <p>An interactive luck-based game with engaging animations and random number generation algorithms.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">CSS3</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-tech="html,css,js,bootstrap">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://another-dice-game.vercel.app" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg dice-game"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Dice Game</h3>
-                        <p>A multiplayer dice game built with Bootstrap for responsive design and JavaScript for game logic.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">Bootstrap</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-tech="html,css,js,bootstrap">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://dice-coin.vercel.app/" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg dice-coin"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Dice Coin Roll Game</h3>
-                        <p>A combination game featuring both dice rolling and coin flipping with Bootstrap styling and smooth animations.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">Bootstrap</span>
-                            <span class="tech-tag">JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-tech="telegram,api">
-                    <div class="project-image">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://itskj.vercel.app/contact-me.html" class="project-link" target="_blank">
-                                    <i class='bx bx-link-external'></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="project-bg contact-integration"></div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Contact Integration</h3>
-                        <p>Advanced contact form with Telegram Bot API integration for real-time message notifications and responses.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Telegram API</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Form Handling</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- No Projects Found -->
+            <div class="no-projects" id="no-projects" style="display: none;">
+                <i class='bx bx-search-alt'></i>
+                <h3>No projects found</h3>
+                <p>Try adjusting your search or filter criteria</p>
             </div>
         </div>
     </section>
+
+    <!-- Project Detail Modal -->
+    <div class="modal" id="project-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-project-name">Project Details</h3>
+                <button class="modal-close" onclick="closeProjectModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-project-body">
+                <!-- Project details will be loaded here -->
+            </div>
+        </div>
+    </div>
 
     <script src="./skills-script.js"></script>
 </body>
