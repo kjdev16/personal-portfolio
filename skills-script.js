@@ -14,7 +14,6 @@ const skillsData = {
                 level: 'Expert',
                 progress: 95,
                 color: '#e34f26',
-                projects: ['personal-portfolio', 'death-note-address-book', 'check-your-luck', 'dice-game', 'dice-coin-roll-game'],
                 description: 'Semantic markup, accessibility, and modern HTML5 features'
             },
             {
@@ -23,7 +22,6 @@ const skillsData = {
                 level: 'Expert',
                 progress: 92,
                 color: '#1572b6',
-                projects: ['personal-portfolio', 'death-note-address-book', 'check-your-luck', 'dice-game', 'dice-coin-roll-game'],
                 description: 'Advanced styling, animations, flexbox, grid, and responsive design'
             },
             {
@@ -32,7 +30,6 @@ const skillsData = {
                 level: 'Advanced',
                 progress: 88,
                 color: '#f7df1e',
-                projects: ['personal-portfolio', 'death-note-address-book', 'check-your-luck', 'dice-game', 'dice-coin-roll-game'],
                 description: 'ES6+, DOM manipulation, async/await, and modern JavaScript patterns'
             },
             {
@@ -41,7 +38,6 @@ const skillsData = {
                 level: 'Advanced',
                 progress: 85,
                 color: '#7952b3',
-                projects: ['dice-game', 'dice-coin-roll-game'],
                 description: 'Responsive framework for rapid UI development'
             },
             {
@@ -50,7 +46,6 @@ const skillsData = {
                 level: 'Intermediate',
                 progress: 75,
                 color: '#06b6d4',
-                projects: ['modern-portfolio'],
                 description: 'Utility-first CSS framework for custom designs'
             }
         ]
@@ -65,7 +60,6 @@ const skillsData = {
                 level: 'Advanced',
                 progress: 82,
                 color: '#3776ab',
-                projects: ['automation-scripts', 'data-analysis-tools'],
                 description: 'Web development, automation, data analysis, and scripting'
             },
             {
@@ -74,7 +68,6 @@ const skillsData = {
                 level: 'Intermediate',
                 progress: 70,
                 color: '#339933',
-                projects: ['contact-integration'],
                 description: 'Server-side JavaScript runtime for scalable applications'
             },
             {
@@ -83,7 +76,6 @@ const skillsData = {
                 level: 'Intermediate',
                 progress: 68,
                 color: '#000000',
-                projects: ['contact-integration'],
                 description: 'Fast, unopinionated web framework for Node.js'
             },
             {
@@ -92,7 +84,6 @@ const skillsData = {
                 level: 'Learning',
                 progress: 60,
                 color: '#61dafb',
-                projects: ['react-portfolio'],
                 description: 'Component-based library for building user interfaces'
             }
         ]
@@ -107,7 +98,6 @@ const skillsData = {
                 level: 'Expert',
                 progress: 90,
                 color: '#f05032',
-                projects: 'all',
                 description: 'Version control, collaboration, and project management'
             },
             {
@@ -116,7 +106,6 @@ const skillsData = {
                 level: 'Intermediate',
                 progress: 70,
                 color: '#fcc624',
-                projects: 'development',
                 description: 'Command line, system administration, and development environment'
             },
             {
@@ -125,7 +114,6 @@ const skillsData = {
                 level: 'Expert',
                 progress: 95,
                 color: '#007acc',
-                projects: 'all',
                 description: 'Primary code editor with extensions and customizations'
             },
             {
@@ -134,7 +122,6 @@ const skillsData = {
                 level: 'Intermediate',
                 progress: 75,
                 color: '#0088cc',
-                projects: ['contact-integration', 'telegram-bots'],
                 description: 'Building interactive bots and automation'
             }
         ]
@@ -149,7 +136,6 @@ const skillsData = {
                 level: 'Expert',
                 progress: 90,
                 color: '#ff6b6b',
-                projects: ['personal-portfolio', 'death-note-address-book', 'check-your-luck'],
                 description: 'Mobile-first design and cross-device compatibility'
             },
             {
@@ -158,7 +144,6 @@ const skillsData = {
                 level: 'Advanced',
                 progress: 80,
                 color: '#4ecdc4',
-                projects: ['personal-portfolio', 'modern-portfolio'],
                 description: 'User experience design and interface optimization'
             },
             {
@@ -167,19 +152,34 @@ const skillsData = {
                 level: 'Advanced',
                 progress: 85,
                 color: '#45b7d1',
-                projects: ['personal-portfolio', 'check-your-luck', 'dice-game'],
                 description: 'CSS animations, transitions, and interactive effects'
             }
         ]
     }
 };
 
-// Project categories and types
-const projectCategories = {
-    'web': 'Web Applications',
-    'game': 'Games & Interactive',
-    'tool': 'Tools & Utilities',
-    'api': 'API & Integration'
+// Enhanced project categorization rules
+const projectCategorizationRules = {
+    web: {
+        keywords: ['portfolio', 'website', 'web', 'landing', 'page', 'site', 'blog', 'dashboard', 'admin'],
+        languages: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Vue', 'Angular'],
+        description: ['website', 'web app', 'landing page', 'portfolio', 'dashboard']
+    },
+    game: {
+        keywords: ['game', 'dice', 'coin', 'luck', 'play', 'puzzle', 'quiz', 'snake', 'tetris', 'memory'],
+        languages: ['JavaScript', 'Python', 'C++', 'C#', 'Unity'],
+        description: ['game', 'play', 'interactive', 'entertainment', 'fun']
+    },
+    tool: {
+        keywords: ['tool', 'utility', 'helper', 'automation', 'script', 'converter', 'generator', 'calculator'],
+        languages: ['Python', 'JavaScript', 'Shell', 'PowerShell', 'Bash'],
+        description: ['tool', 'utility', 'automation', 'script', 'helper', 'converter']
+    },
+    api: {
+        keywords: ['api', 'bot', 'webhook', 'integration', 'service', 'backend', 'server', 'telegram'],
+        languages: ['Node.js', 'Python', 'Express', 'FastAPI', 'Flask'],
+        description: ['api', 'bot', 'integration', 'service', 'backend', 'telegram']
+    }
 };
 
 // State management
@@ -363,12 +363,11 @@ function createSkillLevelCard(level, skills) {
 
 // Create individual skill item
 function createSkillItem(skill) {
-    const projectCount = Array.isArray(skill.projects) ? skill.projects.length : 
-                        skill.projects === 'all' ? 'All' : 
-                        skill.projects === 'development' ? 'Dev' : '1+';
+    const relatedProjects = getProjectsForSkill(skill.name);
+    const projectCount = relatedProjects.length;
     
     return `
-        <div class="skill-item" data-skill="${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}" data-projects='${JSON.stringify(skill.projects)}'>
+        <div class="skill-item" data-skill="${skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}" data-skill-name="${skill.name}">
             <div class="skill-info">
                 <div class="skill-icon" style="background: linear-gradient(135deg, ${skill.color}, ${skill.color}aa)">
                     <i class='bx ${skill.icon}'></i>
@@ -382,7 +381,7 @@ function createSkillItem(skill) {
                 <div class="progress-bar" data-progress="${skill.progress}" style="background: linear-gradient(90deg, ${skill.color}, ${skill.color}aa)"></div>
             </div>
             <div class="skill-description">${skill.description}</div>
-            <div class="project-count">${projectCount} Project${projectCount !== 1 && projectCount !== 'All' && projectCount !== 'Dev' ? 's' : ''}</div>
+            <div class="project-count">${projectCount} Project${projectCount !== 1 ? 's' : ''}</div>
         </div>
     `;
 }
@@ -392,19 +391,33 @@ async function loadProjects() {
     try {
         showProjectsLoading();
         
-        // Fetch repositories from GitHub API
-        const response = await fetch(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
+        // Fetch all repositories from GitHub API
+        let page = 1;
+        let allRepos = [];
         
-        if (!response.ok) {
-            throw new Error(`GitHub API error: ${response.status}`);
+        while (true) {
+            const response = await fetch(
+                `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?page=${page}&per_page=100&sort=updated`
+            );
+            
+            if (!response.ok) {
+                throw new Error(`GitHub API error: ${response.status}`);
+            }
+            
+            const repos = await response.json();
+            
+            if (repos.length === 0) break;
+            
+            allRepos = allRepos.concat(repos);
+            page++;
         }
         
-        const repos = await response.json();
-        
         // Filter and enhance project data
-        allProjects = repos
-            .filter(repo => !repo.fork && repo.name !== GITHUB_USERNAME) // Exclude forks and profile repo
+        allProjects = allRepos
+            .filter(repo => !repo.fork) // Exclude forks
             .map(repo => enhanceProjectData(repo));
+        
+        console.log('Loaded projects:', allProjects.map(p => ({ name: p.name, category: p.category, language: p.language })));
         
         applyProjectFilters();
         hideProjectsLoading();
@@ -415,12 +428,12 @@ async function loadProjects() {
     }
 }
 
-// Enhance project data with additional information
+// Enhanced project categorization
 function enhanceProjectData(repo) {
     const project = { ...repo };
     
-    // Determine project category based on name and description
-    project.category = determineProjectCategory(repo);
+    // Determine project category with improved logic
+    project.category = categorizeProject(repo);
     
     // Add technology stack based on language and topics
     project.techStack = determineTechStack(repo);
@@ -429,26 +442,59 @@ function enhanceProjectData(repo) {
     project.type = determineProjectType(repo);
     project.difficulty = determineProjectDifficulty(repo);
     
-    // Add custom descriptions for known projects
-    project.enhancedDescription = getEnhancedDescription(repo);
+    // Add enhanced descriptions
+    project.enhancedDescription = repo.description || generateDescription(repo);
     
     return project;
 }
 
-// Determine project category
-function determineProjectCategory(repo) {
+// Improved project categorization
+function categorizeProject(repo) {
     const name = repo.name.toLowerCase();
     const description = (repo.description || '').toLowerCase();
+    const language = (repo.language || '').toLowerCase();
+    const topics = repo.topics || [];
     
-    if (name.includes('game') || name.includes('dice') || name.includes('luck')) {
-        return 'game';
+    // Check each category
+    for (const [category, rules] of Object.entries(projectCategorizationRules)) {
+        let score = 0;
+        
+        // Check name keywords
+        if (rules.keywords.some(keyword => name.includes(keyword))) {
+            score += 3;
+        }
+        
+        // Check description keywords
+        if (rules.description.some(keyword => description.includes(keyword))) {
+            score += 2;
+        }
+        
+        // Check language
+        if (rules.languages.some(lang => language.includes(lang.toLowerCase()))) {
+            score += 1;
+        }
+        
+        // Check topics
+        if (topics.some(topic => rules.keywords.includes(topic.toLowerCase()))) {
+            score += 2;
+        }
+        
+        // If score is high enough, assign this category
+        if (score >= 2) {
+            return category;
+        }
     }
-    if (name.includes('bot') || name.includes('api') || name.includes('integration')) {
+    
+    // Default categorization based on primary language
+    if (language.includes('javascript') || language.includes('html') || language.includes('css')) {
+        return 'web';
+    } else if (language.includes('python') && (name.includes('script') || name.includes('tool'))) {
+        return 'tool';
+    } else if (language.includes('python') || language.includes('node')) {
         return 'api';
     }
-    if (name.includes('tool') || name.includes('script') || name.includes('automation')) {
-        return 'tool';
-    }
+    
+    // Default to web if no clear category
     return 'web';
 }
 
@@ -460,14 +506,37 @@ function determineTechStack(repo) {
         stack.push(repo.language);
     }
     
-    if (repo.topics) {
+    if (repo.topics && repo.topics.length > 0) {
         stack.push(...repo.topics);
     }
     
-    // Add common web technologies based on project type
+    // Add inferred technologies based on repo analysis
     const name = repo.name.toLowerCase();
-    if (name.includes('portfolio') || name.includes('website')) {
-        stack.push('HTML5', 'CSS3', 'JavaScript');
+    const description = (repo.description || '').toLowerCase();
+    
+    if (name.includes('react') || description.includes('react')) {
+        stack.push('React');
+    }
+    if (name.includes('vue') || description.includes('vue')) {
+        stack.push('Vue.js');
+    }
+    if (name.includes('angular') || description.includes('angular')) {
+        stack.push('Angular');
+    }
+    if (name.includes('bootstrap') || description.includes('bootstrap')) {
+        stack.push('Bootstrap');
+    }
+    if (name.includes('tailwind') || description.includes('tailwind')) {
+        stack.push('Tailwind CSS');
+    }
+    if (name.includes('node') || description.includes('node')) {
+        stack.push('Node.js');
+    }
+    if (name.includes('express') || description.includes('express')) {
+        stack.push('Express.js');
+    }
+    if (name.includes('telegram') || description.includes('telegram')) {
+        stack.push('Telegram Bot API');
     }
     
     return [...new Set(stack)]; // Remove duplicates
@@ -476,44 +545,99 @@ function determineTechStack(repo) {
 // Determine project type
 function determineProjectType(repo) {
     const name = repo.name.toLowerCase();
+    const category = repo.category;
     
     if (name.includes('portfolio')) return 'Portfolio Website';
-    if (name.includes('game')) return 'Interactive Game';
-    if (name.includes('bot')) return 'Telegram Bot';
-    if (name.includes('tool')) return 'Development Tool';
-    if (name.includes('api')) return 'API Integration';
+    if (category === 'game') return 'Interactive Game';
+    if (category === 'api' && name.includes('bot')) return 'Telegram Bot';
+    if (category === 'tool') return 'Development Tool';
+    if (category === 'api') return 'API Service';
+    if (category === 'web') return 'Web Application';
     
-    return 'Web Application';
+    return 'Project';
 }
 
 // Determine project difficulty
 function determineProjectDifficulty(repo) {
-    const techCount = repo.topics ? repo.topics.length : 0;
-    const hasDescription = repo.description && repo.description.length > 50;
-    const isRecent = new Date(repo.updated_at) > new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    
     let score = 0;
-    if (techCount > 3) score += 2;
-    if (hasDescription) score += 1;
-    if (isRecent) score += 1;
-    if (repo.stargazers_count > 0) score += 1;
     
-    if (score >= 4) return 'Advanced';
-    if (score >= 2) return 'Intermediate';
+    // Factors that increase difficulty
+    if (repo.size > 1000) score += 1; // Large codebase
+    if (repo.stargazers_count > 0) score += 1; // Has stars
+    if (repo.forks_count > 0) score += 1; // Has forks
+    if (repo.topics && repo.topics.length > 3) score += 1; // Multiple technologies
+    if (repo.description && repo.description.length > 100) score += 1; // Detailed description
+    if (repo.language && ['TypeScript', 'Python', 'Java', 'C++'].includes(repo.language)) score += 1; // Complex languages
+    
+    // Check for advanced features in description
+    const description = (repo.description || '').toLowerCase();
+    if (description.includes('api') || description.includes('database') || description.includes('authentication')) score += 1;
+    
+    if (score >= 5) return 'Advanced';
+    if (score >= 3) return 'Intermediate';
     return 'Beginner';
 }
 
-// Get enhanced description for known projects
-function getEnhancedDescription(repo) {
-    const descriptions = {
-        'personal-portfolio': 'A modern, responsive portfolio website showcasing my skills and projects with smooth animations and professional design.',
-        'death-note-address-book': 'A themed address book application with local storage functionality and Death Note anime-inspired design.',
-        'check-your-luck': 'An interactive luck-based game with engaging animations and random number generation algorithms.',
-        'dice-game': 'A multiplayer dice game built with Bootstrap for responsive design and JavaScript for game logic.',
-        'dice-coin-roll-game': 'A combination game featuring both dice rolling and coin flipping with Bootstrap styling and smooth animations.'
+// Generate description if none exists
+function generateDescription(repo) {
+    const name = repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const category = repo.category;
+    const language = repo.language || 'web technologies';
+    
+    const templates = {
+        web: `A ${language.toLowerCase()} web application featuring modern design and responsive layout.`,
+        game: `An interactive ${language.toLowerCase()} game with engaging gameplay and smooth animations.`,
+        tool: `A useful ${language.toLowerCase()} tool designed to simplify development workflows.`,
+        api: `A ${language.toLowerCase()} service providing API functionality and integration capabilities.`
     };
     
-    return descriptions[repo.name] || repo.description || 'A project built with modern web technologies.';
+    return templates[category] || `A ${language.toLowerCase()} project showcasing modern development practices.`;
+}
+
+// Get projects that use a specific skill
+function getProjectsForSkill(skillName) {
+    const skill = skillName.toLowerCase();
+    
+    return allProjects.filter(project => {
+        // Check if skill matches project language
+        if (project.language && project.language.toLowerCase().includes(skill)) {
+            return true;
+        }
+        
+        // Check if skill matches tech stack
+        if (project.techStack.some(tech => tech.toLowerCase().includes(skill))) {
+            return true;
+        }
+        
+        // Special mappings
+        const skillMappings = {
+            'html5': ['html'],
+            'css3': ['css'],
+            'javascript': ['javascript', 'js'],
+            'python': ['python'],
+            'git': ['all'], // Git is used in all projects
+            'github': ['all'],
+            'responsive design': ['html', 'css', 'web'],
+            'bootstrap': ['bootstrap'],
+            'tailwind': ['tailwind'],
+            'node.js': ['node', 'javascript'],
+            'react.js': ['react'],
+            'telegram bot api': ['telegram', 'bot']
+        };
+        
+        const mappings = skillMappings[skill] || [skill];
+        
+        if (mappings.includes('all')) {
+            return true;
+        }
+        
+        return mappings.some(mapping => 
+            project.language?.toLowerCase().includes(mapping) ||
+            project.techStack.some(tech => tech.toLowerCase().includes(mapping)) ||
+            project.name.toLowerCase().includes(mapping) ||
+            project.enhancedDescription.toLowerCase().includes(mapping)
+        );
+    });
 }
 
 // Apply project filters
@@ -536,28 +660,14 @@ function applyProjectFilters() {
     
     // Apply skill filter
     if (currentSkillFilter) {
-        filtered = filtered.filter(project => {
-            const skillProjects = getSkillProjects(currentSkillFilter);
-            return skillProjects.includes(project.name) || 
-                   skillProjects.includes('all') ||
-                   project.techStack.some(tech => tech.toLowerCase().includes(currentSkillFilter.toLowerCase()));
-        });
+        const skillProjects = getProjectsForSkill(currentSkillFilter);
+        filtered = filtered.filter(project => 
+            skillProjects.some(sp => sp.id === project.id)
+        );
     }
     
     filteredProjects = filtered;
     displayProjects();
-}
-
-// Get projects associated with a skill
-function getSkillProjects(skillName) {
-    for (const category of Object.values(skillsData)) {
-        for (const skill of category.skills) {
-            if (skill.name.toLowerCase().replace(/[^a-z0-9]/g, '-') === skillName) {
-                return Array.isArray(skill.projects) ? skill.projects : [skill.projects];
-            }
-        }
-    }
-    return [];
 }
 
 // Display projects
@@ -593,6 +703,14 @@ function createProjectCard(project) {
     const primaryLanguage = project.language || 'Web';
     const languageColor = getLanguageColor(primaryLanguage);
     
+    // Category display names
+    const categoryNames = {
+        web: 'Web Application',
+        game: 'Interactive Game',
+        tool: 'Development Tool',
+        api: 'API Service'
+    };
+    
     card.innerHTML = `
         <div class="project-image">
             <div class="project-overlay">
@@ -610,7 +728,9 @@ function createProjectCard(project) {
                     </button>
                 </div>
             </div>
-            <div class="project-bg ${project.name}" style="background: linear-gradient(135deg, ${languageColor}aa, ${languageColor}44)"></div>
+            <div class="project-bg" style="background: linear-gradient(135deg, ${languageColor}aa, ${languageColor}44)">
+                <div class="project-category-badge">${categoryNames[project.category] || 'Project'}</div>
+            </div>
         </div>
         <div class="project-content">
             <div class="project-header">
@@ -689,6 +809,7 @@ function showProjectModal(projectName) {
                     <div class="project-modal-meta">
                         <span class="project-type-badge">${project.type}</span>
                         <span class="difficulty-badge ${project.difficulty.toLowerCase()}">${project.difficulty}</span>
+                        <span class="category-badge">${project.category.toUpperCase()}</span>
                     </div>
                 </div>
             </div>
@@ -878,7 +999,7 @@ function setupEventListeners() {
 
 // Handle skill item click
 function handleSkillClick(skillItem) {
-    const skillName = skillItem.dataset.skill;
+    const skillName = skillItem.dataset.skillName;
     
     // Remove previous active states
     document.querySelectorAll('.skill-item').forEach(item => {
@@ -890,15 +1011,14 @@ function handleSkillClick(skillItem) {
     currentSkillFilter = skillName;
     
     // Update projects title
-    const skillDisplayName = skillItem.querySelector('h4').textContent;
-    document.getElementById('projects-title').innerHTML = `Projects using <span class="skill-highlight">${skillDisplayName}</span>`;
+    document.getElementById('projects-title').innerHTML = `Projects using <span class="skill-highlight">${skillName}</span>`;
     
     // Apply filters and scroll to projects
     applyProjectFilters();
     scrollToProjects();
     
     // Show skill feedback
-    showSkillFeedback(skillItem, skillDisplayName);
+    showSkillFeedback(skillItem, skillName);
 }
 
 // Show skill feedback
