@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repositories - Kushagra Jain</title>
+    <link rel="stylesheet" href="./github-repos-styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-text">KJ</span>
+                    <div class="brand-dot"></div>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="skills.html" class="nav-link">Skills</a></li>
+                <li><a href="github-repos.html" class="nav-link active">Repositories</a></li>
+                <li><a href="https://drive.usercontent.google.com/download?id=1iKMUs6VxD4ZvMvcDAFR0NpcT4StK51wL&export=download&authuser=0&confirm=t&uuid=52019a42-9cf9-4576-9602-a26bc4e475bb&at=AN8xHor4ASCogelGcVvo4Z94m-ak:1750390233054" class="nav-link">Resume</a></li>
+                <li><a href="contact-me.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">My GitHub</span>
+                    <span class="title-line highlight">Repositories</span>
+                </h1>
+                <p class="hero-subtitle">Explore all my open-source projects and contributions on GitHub</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-repos">-</span>
+                        <span class="stat-label">Total Repositories</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-stars">-</span>
+                        <span class="stat-label">Total Stars</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-forks">-</span>
+                        <span class="stat-label">Total Forks</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
+            <div class="floating-element element-4"></div>
+        </div>
+    </section>
+
+    <!-- GitHub Profile Section -->
+    <section class="github-profile-section">
+        <div class="container">
+            <div class="profile-card" id="profile-card">
+                <div class="profile-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading GitHub profile...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Repositories Section -->
+    <section class="repositories-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">All Repositories</h2>
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="search-repos" placeholder="Search repositories...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="public">Public</button>
+                        <button class="filter-btn" data-filter="forked">Forked</button>
+                        <button class="filter-btn" data-filter="original">Original</button>
+                    </div>
+                    <div class="sort-dropdown">
+                        <select id="sort-repos">
+                            <option value="updated">Recently Updated</option>
+                            <option value="created">Recently Created</option>
+                            <option value="name">Name (A-Z)</option>
+                            <option value="stars">Most Stars</option>
+                            <option value="size">Size</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="repos-loading" id="repos-loading">
+                <div class="loading-spinner"></div>
+                <p>Fetching repositories from GitHub...</p>
+            </div>
+
+            <div class="repos-grid" id="repos-grid">
+                <!-- Repositories will be loaded here -->
+            </div>
+
+            <div class="load-more-container" id="load-more-container" style="display: none;">
+                <button class="load-more-btn" id="load-more-btn">
+                    <i class='bx bx-down-arrow'></i>
+                    Load More Repositories
+                </button>
+            </div>
+
+            <div class="no-results" id="no-results" style="display: none;">
+                <i class='bx bx-search-alt'></i>
+                <h3>No repositories found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Repository Modal -->
+    <div class="modal" id="repo-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-repo-name">Repository Details</h3>
+                <button class="modal-close" onclick="closeRepoModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Repository details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="./github-repos-script.js"></script>
+</body>
+</html>
