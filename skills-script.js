@@ -227,8 +227,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Then load projects and update the counts
     await loadProjects();
     
-    // Update skills display with actual project counts
-    updateSkillProjectCounts();
+    // Update skills display with actual project counts and hide zero-project skills
+    updateSkillsWithProjectCounts();
     
     setupEventListeners();
     updateHeroStats();
@@ -265,14 +265,25 @@ function displaySkills() {
 // Display skills grouped by category
 function displaySkillsByCategory() {
     Object.entries(skillsData).forEach(([categoryName, categoryData], categoryIndex) => {
-        const categoryCard = createSkillCategoryCard(categoryName, categoryData);
-        skillsGrid.appendChild(categoryCard);
+        // Filter out skills with 0 projects if projects are loaded
+        const filteredSkills = projectsLoaded ? 
+            categoryData.skills.filter(skill => getProjectsForSkill(skill.name).length > 0) :
+            categoryData.skills;
         
-        // Animate category appearance
-        setTimeout(() => {
-            categoryCard.style.opacity = '1';
-            categoryCard.style.transform = 'translateY(0)';
-        }, categoryIndex * 100);
+        // Only show category if it has skills with projects
+        if (filteredSkills.length > 0) {
+            const categoryCard = createSkillCategoryCard(categoryName, {
+                ...categoryData,
+                skills: filteredSkills
+            });
+            skillsGrid.appendChild(categoryCard);
+            
+            // Animate category appearance
+            setTimeout(() => {
+                categoryCard.style.opacity = '1';
+                categoryCard.style.transform = 'translateY(0)';
+            }, categoryIndex * 100);
+        }
     });
 }
 
@@ -285,10 +296,12 @@ function displaySkillsByLevel() {
         'Learning': []
     };
     
-    // Group skills by level
+    // Group skills by level, filtering out those with 0 projects if projects are loaded
     Object.values(skillsData).forEach(category => {
         category.skills.forEach(skill => {
-            skillsByLevel[skill.level].push(skill);
+            if (!projectsLoaded || getProjectsForSkill(skill.name).length > 0) {
+                skillsByLevel[skill.level].push(skill);
+            }
         });
     });
     
@@ -395,26 +408,35 @@ function createSkillItem(skill) {
     `;
 }
 
-// Update skill project counts after projects are loaded
-function updateSkillProjectCounts() {
+// Update skills display with project counts and hide zero-project skills
+function updateSkillsWithProjectCounts() {
     if (!projectsLoaded) return;
     
-    document.querySelectorAll('.project-count').forEach(countElement => {
-        const skillName = countElement.getAttribute('data-skill');
-        if (skillName) {
-            const relatedProjects = getProjectsForSkill(skillName);
-            const projectCount = relatedProjects.length;
-            countElement.textContent = `${projectCount} Project${projectCount !== 1 ? 's' : ''}`;
-            
-            // Add animation to show the update
-            countElement.style.transform = 'scale(1.1)';
-            countElement.style.color = 'var(--primary-color)';
-            setTimeout(() => {
-                countElement.style.transform = 'scale(1)';
-                countElement.style.color = '';
-            }, 300);
-        }
-    });
+    // Re-render the entire skills section to filter out zero-project skills
+    displaySkills();
+    
+    // Update project counts for visible skills
+    setTimeout(() => {
+        document.querySelectorAll('.project-count').forEach(countElement => {
+            const skillName = countElement.getAttribute('data-skill');
+            if (skillName) {
+                const relatedProjects = getProjectsForSkill(skillName);
+                const projectCount = relatedProjects.length;
+                countElement.textContent = `${projectCount} Project${projectCount !== 1 ? 's' : ''}`;
+                
+                // Add animation to show the update
+                countElement.style.transform = 'scale(1.1)';
+                countElement.style.color = 'var(--primary-color)';
+                setTimeout(() => {
+                    countElement.style.transform = 'scale(1)';
+                    countElement.style.color = '';
+                }, 300);
+            }
+        });
+        
+        // Re-setup intersection observer for new elements
+        setupIntersectionObserver();
+    }, 100);
 }
 
 // Load projects from GitHub
@@ -1020,9 +1042,9 @@ function setupEventListeners() {
             viewButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentView = btn.dataset.view;
-            displaySkills();
-            // Update project counts after view change
-            setTimeout(() => updateSkillProjectCounts(), 100);
+            
+            // Re-render skills with the new view and filter out zero-project skills
+            updateSkillsWithProjectCounts();
         });
     });
     
@@ -1130,9 +1152,14 @@ function scrollToProjects() {
 
 // Update hero stats
 function updateHeroStats() {
-    const totalSkills = Object.values(skillsData).reduce((acc, category) => acc + category.skills.length, 0);
+    // Count only skills that have projects
+    const skillsWithProjects = projectsLoaded ? 
+        Object.values(skillsData).reduce((acc, category) => {
+            return acc + category.skills.filter(skill => getProjectsForSkill(skill.name).length > 0).length;
+        }, 0) :
+        Object.values(skillsData).reduce((acc, category) => acc + category.skills.length, 0);
     
-    document.getElementById('total-technologies').textContent = totalSkills;
+    document.getElementById('total-technologies').textContent = skillsWithProjects;
     
     // Update project count after projects are loaded
     setTimeout(() => {
