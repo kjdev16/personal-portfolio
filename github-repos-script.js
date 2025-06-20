@@ -109,8 +109,8 @@ function displayProfile(profile) {
 // Update hero stats
 function updateHeroStats(profile) {
     document.getElementById('total-repos').textContent = profile.public_repos;
-    document.getElementById('total-followers').textContent = profile.followers;
-    document.getElementById('total-following').textContent = profile.following;
+    document.getElementById('total-stars').textContent = '0'; // Will be updated after repos load
+    document.getElementById('total-forks').textContent = '0'; // Will be updated after repos load
 }
 
 // Show profile error
