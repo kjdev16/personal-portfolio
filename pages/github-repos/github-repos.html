@@ -32,6 +32,10 @@
                 <span></span>
                 <span></span>
             </button>
+            <label class="mode">
+                <input type="checkbox" id="darkModeToggle">
+                <i class='bx bxs-moon'></i>
+            </label>
         </nav>
     </header>
 
@@ -79,6 +83,69 @@
                 <div class="profile-loading">
                     <div class="loading-spinner"></div>
                     <p>Loading GitHub profile...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Activity Calendar Section -->
+    <section class="github-activity-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">GitHub Activity</h2>
+                <p class="section-subtitle">My contribution history and coding activity</p>
+            </div>
+            <div class="activity-content">
+                <div class="calendar-container">
+                    <div class="calendar-loading" id="calendar-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading contribution calendar...</p>
+                    </div>
+                    <div class="contribution-calendar" id="contribution-calendar">
+                        <!-- GitHub contribution calendar will be loaded here -->
+                    </div>
+                </div>
+                <div class="activity-stats">
+                    <div class="activity-stat">
+                        <span class="activity-stat-number" id="total-commits">-</span>
+                        <span class="activity-stat-label">Total Commits</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-stat-number" id="current-streak">-</span>
+                        <span class="activity-stat-label">Current Streak</span>
+                    </div>
+                    <div class="activity-stat">
+                        <span class="activity-stat-number" id="longest-streak">-</span>
+                        <span class="activity-stat-label">Longest Streak</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Snake Game Section -->
+    <section class="github-snake-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">GitHub Snake Game</h2>
+                <p class="section-subtitle">Watch a snake eat through my contribution grid!</p>
+            </div>
+            <div class="snake-container">
+                <div class="snake-loading" id="snake-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Generating snake game...</p>
+                </div>
+                <div class="snake-game" id="snake-game">
+                    <!-- GitHub Snake Game will be loaded here -->
+                    <picture>
+                        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kjdev16/kjdev16/output/github-contribution-grid-snake-dark.svg" />
+                        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kjdev16/kjdev16/output/github-contribution-grid-snake.svg" />
+                        <img alt="github-contribution-grid-snake" src="https://raw.githubusercontent.com/kjdev16/kjdev16/output/github-contribution-grid-snake.svg" />
+                    </picture>
+                </div>
+                <div class="snake-info">
+                    <p>This animated snake game is generated from my GitHub contribution grid using the <a href="https://github.com/marketplace/actions/generate-snake-game-from-github-contribution-grid" target="_blank">GitHub Snake Game Action</a>.</p>
+                    <p>The snake follows a path through my contribution squares, creating a fun visualization of my coding activity!</p>
                 </div>
             </div>
         </div>
@@ -152,6 +219,7 @@
         </div>
     </div>
 
+    <script src="../../assets/js/main.js"></script>
     <script src="github-repos-script.js"></script>
 </body>
 </html>

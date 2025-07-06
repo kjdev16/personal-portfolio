@@ -41,14 +41,34 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadGitHubProfile();
-    await loadRepositories();
+    // Load profile, activity calendar, and initial repos in parallel for better performance
+    await Promise.all([
+        loadGitHubProfile(),
+        loadGitHubActivity(),
+        loadInitialRepositories()
+    ]);
     setupEventListeners();
 });
 
-// Load GitHub profile information
+// Load GitHub profile information with caching
 async function loadGitHubProfile() {
     try {
+        // Check for cached profile data first
+        const cachedProfile = getCachedProfile();
+        if (cachedProfile && isCacheValid(cachedProfile.timestamp)) {
+            displayProfile(cachedProfile.data);
+            updateHeroStats(cachedProfile.data);
+            return;
+        }
+        
+        // Show loading state for profile
+        profileCard.innerHTML = `
+            <div class="profile-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading GitHub profile...</p>
+            </div>
+        `;
+        
         const response = await fetch(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}`);
         
         if (!response.ok) {
@@ -56,6 +76,10 @@ async function loadGitHubProfile() {
         }
         
         const profile = await response.json();
+        
+        // Cache the profile data
+        cacheProfile(profile);
+        
         displayProfile(profile);
         updateHeroStats(profile);
     } catch (error) {
@@ -88,9 +112,13 @@ function displayProfile(profile) {
                     </div>
                 </div>
                 <div class="profile-links">
-                    <a href="${profile.html_url}" target="_blank" class="profile-link">
+                    <a href="https://github.com/kjdev16" target="_blank" class="profile-link">
                         <i class='bx bxl-github'></i>
                         View on GitHub
+                    </a>
+                    <a href="https://github.com/kjdev16" target="_blank" class="profile-link">
+                        <i class='bx bx-user'></i>
+                        My Profile
                     </a>
                     ${profile.blog ? `
                         <a href="${profile.blog}" target="_blank" class="profile-link">
@@ -126,14 +154,285 @@ function showProfileError() {
     `;
 }
 
-// Load repositories from GitHub API
-async function loadRepositories() {
+// Load GitHub activity and contribution calendar
+async function loadGitHubActivity() {
+    try {
+        const calendarContainer = document.getElementById('contribution-calendar');
+        const calendarLoading = document.getElementById('calendar-loading');
+        
+        // Check for cached activity data
+        const cachedActivity = getCachedActivity();
+        if (cachedActivity && isCacheValid(cachedActivity.timestamp)) {
+            displayActivityCalendar(cachedActivity.data);
+            updateActivityStats(cachedActivity.stats);
+            return;
+        }
+        
+        // Show loading state
+        calendarLoading.style.display = 'flex';
+        calendarContainer.style.display = 'none';
+        
+        // Fetch contribution data from GitHub API
+        const response = await fetch(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/events?per_page=100`);
+        
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status}`);
+        }
+        
+        const events = await response.json();
+        
+        // Process events to create contribution data
+        const contributionData = processContributionData(events);
+        const activityStats = calculateActivityStats(contributionData);
+        
+        // Cache the activity data
+        cacheActivity(contributionData, activityStats);
+        
+        // Display the calendar and stats
+        displayActivityCalendar(contributionData);
+        updateActivityStats(activityStats);
+        
+        // Hide loading
+        calendarLoading.style.display = 'none';
+        calendarContainer.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error loading GitHub activity:', error);
+        showActivityError();
+    }
+}
+
+// Process contribution data from GitHub events
+function processContributionData(events) {
+    const contributions = {};
+    const today = new Date();
+    const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+    
+    // Initialize all dates with 0 contributions
+    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        contributions[dateStr] = 0;
+    }
+    
+    // Count contributions from events
+    events.forEach(event => {
+        if (event.type === 'PushEvent' && event.payload && event.payload.commits) {
+            const dateStr = event.created_at.split('T')[0];
+            if (contributions[dateStr] !== undefined) {
+                contributions[dateStr] += event.payload.commits.length;
+            }
+        }
+    });
+    
+    return contributions;
+}
+
+// Calculate activity statistics
+function calculateActivityStats(contributionData) {
+    const values = Object.values(contributionData);
+    const totalCommits = values.reduce((sum, count) => sum + count, 0);
+    
+    // Calculate current streak
+    let currentStreak = 0;
+    const today = new Date();
+    for (let i = 0; i < 365; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        if (contributionData[dateStr] > 0) {
+            currentStreak++;
+        } else {
+            break;
+        }
+    }
+    
+    // Calculate longest streak
+    let longestStreak = 0;
+    let tempStreak = 0;
+    Object.values(contributionData).forEach(count => {
+        if (count > 0) {
+            tempStreak++;
+            longestStreak = Math.max(longestStreak, tempStreak);
+        } else {
+            tempStreak = 0;
+        }
+    });
+    
+    return {
+        totalCommits,
+        currentStreak,
+        longestStreak
+    };
+}
+
+// Display activity calendar
+function displayActivityCalendar(contributionData) {
+    const calendarContainer = document.getElementById('contribution-calendar');
+    
+    // Create SVG calendar
+    const svg = createContributionCalendar(contributionData);
+    calendarContainer.innerHTML = '';
+    calendarContainer.appendChild(svg);
+}
+
+// Create contribution calendar SVG
+function createContributionCalendar(contributionData) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 800 120');
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '120');
+    
+    const maxContributions = Math.max(...Object.values(contributionData));
+    const colors = [
+        '#ebedf0', // No contributions
+        '#9be9a8', // 1-3 contributions
+        '#40c463', // 4-6 contributions
+        '#30a14e', // 7-9 contributions
+        '#216e39'  // 10+ contributions
+    ];
+    
+    let x = 0;
+    const today = new Date();
+    const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+    
+    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const contributions = contributionData[dateStr] || 0;
+        
+        // Determine color based on contribution count
+        let colorIndex = 0;
+        if (contributions > 0) {
+            if (contributions <= 3) colorIndex = 1;
+            else if (contributions <= 6) colorIndex = 2;
+            else if (contributions <= 9) colorIndex = 3;
+            else colorIndex = 4;
+        }
+        
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', 0);
+        rect.setAttribute('width', '10');
+        rect.setAttribute('height', '10');
+        rect.setAttribute('fill', colors[colorIndex]);
+        rect.setAttribute('rx', '2');
+        rect.setAttribute('ry', '2');
+        
+        // Add tooltip
+        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+        title.textContent = `${dateStr}: ${contributions} contribution${contributions !== 1 ? 's' : ''}`;
+        rect.appendChild(title);
+        
+        svg.appendChild(rect);
+        x += 12;
+    }
+    
+    return svg;
+}
+
+// Update activity statistics
+function updateActivityStats(stats) {
+    document.getElementById('total-commits').textContent = stats.totalCommits;
+    document.getElementById('current-streak').textContent = stats.currentStreak;
+    document.getElementById('longest-streak').textContent = stats.longestStreak;
+}
+
+// Show activity error
+function showActivityError() {
+    const calendarContainer = document.getElementById('contribution-calendar');
+    const calendarLoading = document.getElementById('calendar-loading');
+    
+    calendarLoading.style.display = 'none';
+    calendarContainer.innerHTML = `
+        <div class="activity-error">
+            <i class='bx bx-error-circle'></i>
+            <h3>Unable to load activity</h3>
+            <p>There was an error loading the GitHub activity. Please try again later.</p>
+        </div>
+    `;
+}
+
+// Activity caching functions
+function cacheActivity(data, stats) {
+    const cacheData = {
+        data: data,
+        stats: stats,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('github_activity_cache', JSON.stringify(cacheData));
+}
+
+function getCachedActivity() {
+    const cached = localStorage.getItem('github_activity_cache');
+    return cached ? JSON.parse(cached) : null;
+}
+
+// Load initial repositories (first page only) for faster loading
+async function loadInitialRepositories() {
     try {
         showLoading();
         
+        // Check for cached data first
+        const cachedData = getCachedData();
+        if (cachedData && isCacheValid(cachedData.timestamp)) {
+            allRepositories = cachedData.repos;
+            updateHeroStatsFromCache(cachedData.stats);
+            applyFiltersAndSort();
+            hideLoading();
+            return;
+        }
+        
+        // Fetch first page of repositories for immediate display
+        const response = await fetch(
+            `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?page=1&per_page=30&sort=updated`
+        );
+        
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status}`);
+        }
+        
+        const repos = await response.json();
+        
+        // Calculate initial stats
+        const totalStats = repos.reduce((acc, repo) => {
+            acc.stars += repo.stargazers_count;
+            acc.forks += repo.forks_count;
+            return acc;
+        }, { stars: 0, forks: 0 });
+        
+        // Update hero stats
+        document.getElementById('total-stars').textContent = totalStats.stars;
+        document.getElementById('total-forks').textContent = totalStats.forks;
+        
+        allRepositories = repos;
+        applyFiltersAndSort();
+        hideLoading();
+        
+        // Load remaining repositories in background (non-blocking)
+        setTimeout(() => {
+            loadAllRepositoriesInBackground();
+        }, 100);
+        
+    } catch (error) {
+        console.error('Error loading initial repositories:', error);
+        showError('Failed to load repositories. Please try again later.');
+        hideLoading();
+    }
+}
+
+// Load all repositories in background for complete data
+async function loadAllRepositoriesInBackground() {
+    try {
         // Fetch all repositories (GitHub API returns max 100 per page)
         let page = 1;
         let allRepos = [];
+        
+        // Start with the repos we already have
+        allRepos = [...allRepositories];
+        
+        // Only fetch additional pages if we have more than 30 repos
+        if (allRepos.length >= 30) {
+            page = 2; // Start from page 2 since we already have page 1
+        }
         
         while (true) {
             const response = await fetch(
@@ -150,28 +449,73 @@ async function loadRepositories() {
             
             allRepos = allRepos.concat(repos);
             page++;
+            
+            // Add a small delay to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
         
-        // Calculate total stars and forks
+        // Calculate total stats
         const totalStats = allRepos.reduce((acc, repo) => {
             acc.stars += repo.stargazers_count;
             acc.forks += repo.forks_count;
             return acc;
         }, { stars: 0, forks: 0 });
         
-        // Update hero stats with calculated values
+        // Update hero stats with complete data
         document.getElementById('total-stars').textContent = totalStats.stars;
         document.getElementById('total-forks').textContent = totalStats.forks;
         
         allRepositories = allRepos;
+        
+        // Cache the data
+        cacheData(allRepos, totalStats);
+        
+        // Re-apply filters with complete data
         applyFiltersAndSort();
-        hideLoading();
         
     } catch (error) {
-        console.error('Error loading repositories:', error);
-        showError('Failed to load repositories. Please try again later.');
-        hideLoading();
+        console.error('Error loading all repositories:', error);
+        // Don't show error to user since initial load was successful
     }
+}
+
+// Cache management functions
+function cacheData(repos, stats) {
+    const cacheData = {
+        repos: repos,
+        stats: stats,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('github_repos_cache', JSON.stringify(cacheData));
+}
+
+function getCachedData() {
+    const cached = localStorage.getItem('github_repos_cache');
+    return cached ? JSON.parse(cached) : null;
+}
+
+function cacheProfile(profile) {
+    const cacheData = {
+        data: profile,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('github_profile_cache', JSON.stringify(cacheData));
+}
+
+function getCachedProfile() {
+    const cached = localStorage.getItem('github_profile_cache');
+    return cached ? JSON.parse(cached) : null;
+}
+
+function isCacheValid(timestamp) {
+    // Cache is valid for 1 hour
+    const oneHour = 60 * 60 * 1000;
+    return (Date.now() - timestamp) < oneHour;
+}
+
+function updateHeroStatsFromCache(stats) {
+    document.getElementById('total-stars').textContent = stats.stars;
+    document.getElementById('total-forks').textContent = stats.forks;
 }
 
 // Apply current filters and sorting
